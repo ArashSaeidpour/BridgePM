@@ -26,7 +26,7 @@ set counter 1
  model basic -ndm 3 -ndf 6;  ## Remove hashtag when using contact elements
 
 
-source materials.tcl
+# source materials.tcl
 
 
 

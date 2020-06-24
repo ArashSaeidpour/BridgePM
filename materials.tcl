@@ -24,6 +24,8 @@ set pi [expr acos(-1)]
 
 # MAterial models for elastomeric pads - middle span
 set sigmam1 [expr ($spanlengths(2)*$DeckWeigth(2))/($ElastomerWidth*$ElastomerLength*$NumGirders*2)];  ## Configs of the second span is considered as the general config of all middle spans as it is the case in this project 
+
+
 set miu1 [expr 0.05+0.4/($sigmam1/1000000)]
 set fyelastomer1 [expr (($spanlengths(2)*$DeckWeigth(2))/($NumGirders*2))*$miu1]
 puts $fyelastomer1

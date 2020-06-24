@@ -38,17 +38,19 @@ file mkdir "$dataDir/Column Critical Nodes";               # Folder in which cri
 file mkdir "$dataDir/Column Critical Elements";             # Folder in which critical column elements outputs are recorded
 
 
-
+puts "data dir is $dataDir";
 
 set counter $RecorderCounter
 for {set i 2} {$i <= [expr $numberofspans]} {incr i} {
                   for {set j 1} {$j <= [expr $numofcolumns]} {incr j} {
-file mkdir [append $counter "$dataDir/Columns/" "Span " [expr $i-1] " Column " $j];     ### Fiber sections for each column are saved in this directory 
-                  set counter [expr $counter+1]       
-file mkdir [append $counter "$dataDir/Column Critical Nodes/" "Span " [expr $i-1] " Column " $j];     ### Colum critical nodes - moment and curvature                                
-                  set counter [expr $counter+1]
-file mkdir [append $counter "$dataDir/Column Critical Elements/" "Span " [expr $i-1] " Column " $j];     ### Column critical element- moement and curvature                                
-                  set counter [expr $counter+1]
+                    
+                    set span_number [expr $i-1]
+                    file mkdir "$dataDir/Columns/Span ${span_number} Column $j";     ### Fiber sections for each column are saved in this directory 
+                    set counter [expr $counter+1]; 
+                    file mkdir "$dataDir/Column Critical Nodes/Span ${span_number} Column $j"; ### Colum critical nodes - moment and curvature  
+                    set counter [expr $counter+1]; 
+                    file mkdir  "$dataDir/Column Critical Elements/Span ${span_number} Column $j";     ### Column critical element- moement and curvature                                
+                    set counter [expr $counter+1];
                   }
    }
 
@@ -224,26 +226,40 @@ set PSCPileTorsionalStiffness [expr 0.4*$ConcreteModulusofElasticity*0.5*(1-0.63
 
 
 
-puts "control 1"
+puts "control 1";
 source msections.tcl 
 
-
+puts "sections loaded";
 
 #### Switching between RC column and PSC pile for bents
 if {$BentSectionSwitch==1} {
 
+
+
 set BentSec $colSecTag3D
 set ColSecHeight $ro
 
+;
+
 } elseif {$BentSectionSwitch==2} {
 
-set GroundElevation [expr $DeckElevation-$PileExposedLength]
+
+puts $PileExposedLength;
+set GroundElevation [expr $DeckElevation - $PileExposedLength];
+
 set PileEmbededLength $GroundElevation
+
 set PileMaterialsCOunter 2000;
+
+
+puts "br6";
 
 source get_pyParam.tcl
 source get_tzParam.tcl
 source get_qzParam.tcl
+
+
+puts "br5";
 
 set BentSec $PSCPileSecTag3D
 set ColSecHeight [expr $PSCPileHSec/2]
@@ -251,7 +267,7 @@ set ColMassDen [expr $PSCPileHSec*$PSCPileBSec*$DenConc];# pile mass per unit le
 }
 
 
-
+puts "breakpoint 24"
 
 
 set criticalelementnodes [open "$dataDir/Critical column element nodes.txt" w+] ; ### This file records critical column elements near the groudn elevation and their node numbers

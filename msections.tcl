@@ -24,13 +24,15 @@ set ro [expr $DSec/2];	        # overall (outer) radius of the section
 #set nfCoverT 30;		# number of theta divisions in the cover
 
 # Define the fiber section
-section Fiber $SecTagCol  {
+section Fiber $SecTagCol -GJ 0 {
 	set rc [expr $ro-$coverSec];					# Core radius
 	patch circ 22 $nfCoreT $nfCoreR 0 0 $ri $rc 0 360;		# Define the core patch
 	patch circ 21 $nfCoverT $nfCoverR 0 0 $rc $ro 0 360;	# Define the cover patch
 	set theta [expr 360.0/$numBarsSec];		# Determine angle increment between bars
 	layer circ 23 $numBarsSec $barAreaSec 0 0 $rc ;	# Define the reinforcing layer
 }
+
+
 
 
 #assign torsional Stiffness for 3D Model
@@ -97,6 +99,7 @@ set CapBeamSecTag 4;			# set tag for symmetric section
 #    The core concrete ends at the NA of the reinforcement
 #    The center of the section is at (0,0) in the local axis system
 
+
 set coverY [expr $HSec/2.0];	# The distance from the section z-axis to the edge of the cover concrete -- outer edge of cover concrete
 set coverZ [expr $BSec/2.0];	# The distance from the section y-axis to the edge of the cover concrete -- outer edge of cover concrete
 set coreY [expr $coverY-$coverH];	# The distance from the section z-axis to the edge of the core concrete --  edge of the core concrete/inner edge of cover concrete
@@ -104,7 +107,7 @@ set coreZ [expr $coverZ-$coverB];	# The distance from the section y-axis to the 
 #set nfY 14;			        # number of fibers for concrete in y-direction
 #set nfZ 14;				# number of fibers for concrete in z-direction
 set numBarsInt [expr $numBarsIntTot/2];	# number of intermediate bars per side
-section Fiber $CapBeamSecTag     {;	# Define the fiber section
+section Fiber $CapBeamSecTag -GJ  0  {;	# Define the fiber section
 	patch quadr 22 $nfZ $nfY -$coreY $coreZ -$coreY -$coreZ $coreY -$coreZ $coreY $coreZ; 	# Define the core patch
 	patch quadr 21 1 $nfY -$coverY $coverZ -$coreY $coreZ $coreY $coreZ $coverY $coverZ;	# Define the four cover patches
 	patch quadr 21 1 $nfY -$coreY -$coreZ -$coverY -$coverZ $coverY -$coverZ $coreY -$coreZ
@@ -115,7 +118,6 @@ section Fiber $CapBeamSecTag     {;	# Define the fiber section
 	layer straight 23 $numBarsTop $barAreaTop $coreY $coreZ $coreY -$coreZ;	# top layer reinfocement
 	layer straight 23 $numBarsBot $barAreaBot  -$coreY $coreZ  -$coreY -$coreZ;	# bottom layer reinforcement
 };	# end of fibersection definition
-
 
 ######### assign torsional Stiffness for 3D Model
 set CapBeamSecTagTorsion 30;		# ID tag for torsional section behavior
@@ -187,7 +189,7 @@ set PSCPilecoreZ [expr $PSCPilecoverZ-$PSCPilecoverB];	# The distance from the s
 #set PSCPilenfY 14;			        # number of fibers for concrete in y-direction
 #set PSCPilenfZ 14;				# number of fibers for concrete in z-direction
 set PSCPilenumBarsInt [expr $PSCPilenumBarsIntTot/2];	# number of intermediate bars per side
-section Fiber $PSCPileSecTag     {;	# Define the fiber section
+section Fiber $PSCPileSecTag -GJ 0   {;	# Define the fiber section
 	patch quadr 122 $PSCPilenfZ $PSCPilenfY -$PSCPilecoreY $PSCPilecoreZ -$PSCPilecoreY -$PSCPilecoreZ $PSCPilecoreY -$PSCPilecoreZ $PSCPilecoreY $PSCPilecoreZ; 	# Define the core patch
 	patch quadr 121 1 $PSCPilenfY -$PSCPilecoverY $PSCPilecoverZ -$PSCPilecoreY $PSCPilecoreZ $PSCPilecoreY $PSCPilecoreZ $PSCPilecoverY $PSCPilecoverZ;	# Define the four cover patches
 	patch quadr 121 1 $PSCPilenfY -$PSCPilecoreY -$PSCPilecoreZ -$PSCPilecoverY -$PSCPilecoverZ $PSCPilecoverY -$PSCPilecoverZ $PSCPilecoreY -$PSCPilecoreZ

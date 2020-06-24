@@ -9,7 +9,7 @@
 
 set RecorderCounter 1
 set RunCounter 1;
-for {set RunCounter 1} {$RunCounter <= 10} {incr RunCounter} {
+for {set RunCounter 1} {$RunCounter <= 2} {incr RunCounter} {
 
 set address ""
 append address "Run" $RunCounter "/" "Run" $RunCounter ".txt"
